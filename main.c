@@ -148,7 +148,8 @@ void Sekunde(void)  //Rutina de interrupcion para pulso de muestreo
     //Conteo de Tiempo
     if(MilSeg>=1000) //Segundo
     {
-     //   printf("\t\nDEBUG");
+        GetTemp();
+        printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
         Seg++;
         MilSeg=0;
     }

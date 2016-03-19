@@ -33,15 +33,13 @@ unsigned char  FC,FC6;
 unsigned int  R=0,R6=0;
 unsigned char  FlagR=0;
 
-//Inicializaci�n de buffer para an�lisis de frecuencia cardiaca
+//Inicialización de buffer para an�lisis de frecuencia cardiaca
 unsigned int ECGsignal[BufferSignalSize]={0};
 unsigned char Der_ECGsignal[BufferSignalSize]={0};
 unsigned int iECGsignal=0;
 unsigned int ECG_ThresholdMAX=0;
 unsigned char AuxFC=0;
-unsigned char FC_Send=0;
-
-
+unsigned char FC_Send=0;  //Variable de almacenamiento de la frecuencia cardiaca
 
 int GetECGADC()  //Captura de ECG en ADC
 {
@@ -49,11 +47,8 @@ int GetECGADC()  //Captura de ECG en ADC
 
     SetChanADC(ADC_CH11);
     ConvertADC();
-
     while(BusyADC());
     ECGRaw = ReadADC();
-
-    //CloseADC();
 
     return ECGRaw;
 }
@@ -71,66 +66,59 @@ void ECG(void)
     unsigned int ECG_Sample;
     unsigned char iECG=0;
 
-    //Discretizaci�n de se�al
-    ECG_Sample=GetECGADC();                         //Muestreo de se�al
+    //Discretizacion de señal
+    ECG_Sample=GetECGADC();                         //Signal samppling
     ECGsignal[iECGsignal]=ECG_Sample;               //Adquisici�n de se�al
 
-    // Adquisici�n de frecuencia cardiaca
+    // Adquisicion de frecuencia cardiaca al tener muestras suficientes
     if(iECGsignal>=BufferSignalSize)
     {
+        AuxFC=GetFC();                                    //Funcion para calculo de Frecuencia cardiaca
 
-        AuxFC=GetFC();                                    //Funci�n para calculo de Frecuencia cardiaca
         if(AuxFC!=0)
-            FC_Send=AuxFC;
-
-
-        iECGsignal=0;
+          FC_Send=AuxFC;
+          iECGsignal=0;  // Reinicio de muestreo
     }
     else
     {
         iECGsignal++;
     }
 
-
-    ECGpack[iECGsample]=Make8(ECG_Sample,1);        //Almacenamiento paquete para env�o de se�al primer Byte
-    ECGpack[iECGsample+1]=Make8(ECG_Sample,2);      //Almacenamiento paquete para env�o de se�al segundo Byte
-
+    ECGpack[iECGsample]=Make8(ECG_Sample,1);        //Almacenamiento paquete para envío de se�al primer Byte
+    ECGpack[iECGsample+1]=Make8(ECG_Sample,2);      //Almacenamiento paquete para envío de se�al segundo Byte
 
     iECGsample=iECGsample+2;
-    // printf("%d\n\r",ECG_Sample);  //Graficaci�n matlab
+    // printf("%d\n\r",ECG_Sample);  //Graficación matlab
 
 
 
-    //------------------------     Env�o de informaci�n
-
-    if(iECGsample>=102)                 //Al completar 100 muestras se env�a la informaci�n
+    //------------------------     Envío de información
+    if(iECGsample>=102)                 //Al completar 100 muestras se envía la informaci�n
     {
         ECGpack[0]=0x4D;                //Primer Byte de paquete es el identificador
         ECGpack[1]=iPack;               //Segundo byte es identificador de paquete.
 
-        /* Comentado por chavarin pa debuggeo */
-        for(iECG=0; iECG<102 ; iECG++)  //Env�o de los 102 Bytes que conforman el paquete.
-        //  putch(ECGpack[iECG]);
+        for(iECG=0; iECG<102 ; iECG++)  //Envío de los 102 Bytes que conforman el paquete.
+        {
+          //putch(ECGpack[iECG]);
+        }
 
-        iECGsample=2;                   //Reseteo de �ndice
+        iECGsample=2;                   //Reseteo de índice
         iPack++;                        //Aumento en contador de paquetes
 
-        if(iPack >= 254)                //Env�o de muestras de Temperatura y frecuenc�a cardiaca al completar 254 envios
+        if(iPack >= 254)                //Envío de muestras de Temperatura y frecuenc�a cardiaca al completar 254 envios
         {
             iPack=0;                    //Reseteo en contador de paqeutes
-//            SendLarPackTFP(GetTemp(),FC_Send,0X3F);   //Comentado por Chavarin
-            GetTemp();
-           //SendLarPackTFP(TempExt,FC_Send,getPosition());   //Comentado por Chavarin
-            printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
+          //  GetTemp();
+           //SendLarPackTFP(TempExt,FC_Send,getPosition());
+            //printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
 
         }
         else if (iPack==127)            //Env�o de muestras de Temperatura y frecuencia cardiaca al completar 127 envios
         {
-
-//            SendLarPackTFP(GetTemp(),FC_Send,0X3F);   //Comentado por Chavarin
-            GetTemp();
-           //SendLarPackTFP(TempExt,FC_Send,getPosition());   //Comentado por Chavarin
-           // printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
+          //  GetTemp();
+           //SendLarPackTFP(TempExt,FC_Send,getPosition());
+          //  printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
         }
 
     }
