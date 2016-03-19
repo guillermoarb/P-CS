@@ -1,12 +1,13 @@
 /*
- * File:   XBeeAT.h
- * Author: GuillermoARB
+ * File:   XBeeAPI16Bits.h
+ * Author: guillermoadrianrodriguezbarragan
  *
- * Created on 26 de septiembre de 2015, 16:53
+ * Created on March 18, 2016, 6:06 PM
  */
-/*
-#ifndef XBEEAT_H
-#define	XBEEAT_H
+
+
+#ifndef XBEEAPI16BITS_H
+#define	XBEEAPI16BITS_H
 
 #ifdef	__cplusplus
 extern "C" {
@@ -22,4 +23,4 @@ void putch(char data);
 }
 #endif
 
-#endif	/* XBEEAT_H */
+#endif	/* XBEEAPI16BITS_H */

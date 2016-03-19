@@ -1,9 +1,9 @@
 #include <xc.h>
-#include "XBeeAT.h"
+#include "XBeeAPI16Bits.h"
 #include <stdio.h>
 #include <plib/usart.h>
 
-/*^
+
 int Make16 (char MSB, char LSB)
 {
     int Maked16=0;
@@ -97,5 +97,3 @@ void Setup_USART1XBAPI(void)
     PIE1bits.RC1IE=1;       //Receive Interrupt: Enabled
     PIR1bits.RC1IF=0;       //Reset de EUSART2 Receive Interrupt Flag
 }
-
-*/

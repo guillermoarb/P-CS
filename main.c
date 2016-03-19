@@ -23,7 +23,7 @@
 #include <plib/timers.h>
 #include <plib/usart.h>
 #include <plib/adc.h>
-#include "XBeeAT.h"
+#include "XBeeAPI16Bits.h"
 #include "ADC_Config.h"
 #include "Temp_RTD.h"
 #include "ECG.h"
@@ -59,12 +59,8 @@ void main() {
 
     SetupInit();                        //Inicializar sensores y procesos.
 
-
     printf("Smart Shirt v1.0");
 
-
-//  printf("CLEARDATA\r");              //Graficador Excel
-//  printf("LABEL,Time,EGG\r");
 
     while(1)
     {
@@ -74,11 +70,11 @@ void main() {
 }
 
 
-void SetupTimer0(unsigned char T,unsigned char N)  //Configuraci�n de interrupci�n del timer
+void SetupTimer0(unsigned char T,unsigned char N)  //Configuracion de interrupci0n del timer
 {
     switch (T)
     {
-        case 1:   //Opci�n para 1 Segundo
+        case 1:   //Opcion para 1 Segundo
             Timer0Config = TIMER_INT_ON & T0_16BIT & T0_SOURCE_INT & T0_PS_1_256 ;
             Load=0x85ED; //1 Seg. FOSC 32 MHz
         break;
@@ -109,16 +105,11 @@ void SetupInit()  //Funci�n de inicializaci�n de funciones y procesos.
     SetupTimer0(2,0);
     INTERRUPT_Initialize();
     Init_ADC();
-
     setupI2C();
-//    printf("\rVamos");
     unsigned char r = initADXL345();
-//    printf("\r adxl = 0x%X",r);
-
     PEIE = 1;
     INTCONbits.GIE = 1;
 }
-
 
 void SetupClock() //Configuraci�n de reloj.
 {
@@ -130,14 +121,11 @@ void SetupClock() //Configuraci�n de reloj.
 
 void SetupPorts()  //Configuraci�n de puertos
 {
-
     ANSELCbits.ANSC2=0;
     TRISCbits.RC2 = 0;
     PORTCbits.RC2=0;
 
     TRISAbits.RA3=0;
-
-
     PORTAbits.RA3=0;
 
     TRISBbits.RB4=1;
@@ -149,17 +137,14 @@ void SetupPorts()  //Configuraci�n de puertos
     TRISBbits.RB0=1;
     ANSELBbits.ANSB0=0;
     PORTBbits.RB0=0;
-
 }
 
 
-void Sekunde(void)  //Rutina de interrupci�n configurada a 1 milisegundo en "SetupTimer0(2,0)"
+void Sekunde(void)  //Rutina de interrupcion para pulso de muestreo
 {
     //Variables globales de tiempo
     MilSeg++;
     CuartoSeg++;
-
-
     //Conteo de Tiempo
     if(MilSeg>=1000) //Segundo
     {
@@ -170,18 +155,12 @@ void Sekunde(void)  //Rutina de interrupci�n configurada a 1 milisegundo en "S
       //conteo para fecuencia de muestreo
     if(CuartoSeg == 4) // 4 Milisegundos
     {
-
-        ECG();
+        ECG();  //Cálculo de ECG
         CuartoSeg=0;
     }
-
     if(Seg==60)
     {
-
         Min++;
         Seg=0;
     }
-
-    /* limpiamos el contador del WDT*/
-    //clrwdt;
 }

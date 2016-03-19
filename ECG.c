@@ -6,7 +6,7 @@
 #include <plib/timers.h>
 #include <plib/usart.h>
 #include <plib/adc.h>
-#include "XBeeAT.h"
+#include "XBeeAPI16Bits.h"
 #include "ADC_Config.h"
 #include "ECG.h"
 #include "Utilities.h"
@@ -33,7 +33,7 @@ unsigned char  FC,FC6;
 unsigned int  R=0,R6=0;
 unsigned char  FlagR=0;
 
-//Inicialización de buffer para análisis de frecuencia cardiaca
+//Inicializaciï¿½n de buffer para anï¿½lisis de frecuencia cardiaca
 unsigned int ECGsignal[BufferSignalSize]={0};
 unsigned char Der_ECGsignal[BufferSignalSize]={0};
 unsigned int iECGsignal=0;
@@ -41,7 +41,7 @@ unsigned int ECG_ThresholdMAX=0;
 unsigned char AuxFC=0;
 unsigned char FC_Send=0;
 
-    
+
 
 int GetECGADC()  //Captura de ECG en ADC
 {
@@ -58,7 +58,7 @@ int GetECGADC()  //Captura de ECG en ADC
     return ECGRaw;
 }
 
-float GetECG_Volt() //Conversión de ADC Raw a Voltaje
+float GetECG_Volt() //Conversiï¿½n de ADC Raw a Voltaje
 {
     float ECG_Volt;
 
@@ -70,16 +70,16 @@ void ECG(void)
 {
     unsigned int ECG_Sample;
     unsigned char iECG=0;
-    
-    //Discretización de señal
-    ECG_Sample=GetECGADC();                         //Muestreo de señal
-    ECGsignal[iECGsignal]=ECG_Sample;               //Adquisición de señal
 
-    // Adquisición de frecuencia cardiaca
+    //Discretizaciï¿½n de seï¿½al
+    ECG_Sample=GetECGADC();                         //Muestreo de seï¿½al
+    ECGsignal[iECGsignal]=ECG_Sample;               //Adquisiciï¿½n de seï¿½al
+
+    // Adquisiciï¿½n de frecuencia cardiaca
     if(iECGsignal>=BufferSignalSize)
     {
-        
-        AuxFC=GetFC();                                    //Función para calculo de Frecuencia cardiaca
+
+        AuxFC=GetFC();                                    //Funciï¿½n para calculo de Frecuencia cardiaca
         if(AuxFC!=0)
             FC_Send=AuxFC;
 
@@ -88,43 +88,43 @@ void ECG(void)
     }
     else
     {
-        iECGsignal++;  
+        iECGsignal++;
     }
 
-    
-    ECGpack[iECGsample]=Make8(ECG_Sample,1);        //Almacenamiento paquete para envío de señal primer Byte
-    ECGpack[iECGsample+1]=Make8(ECG_Sample,2);      //Almacenamiento paquete para envío de señal segundo Byte
 
-    
+    ECGpack[iECGsample]=Make8(ECG_Sample,1);        //Almacenamiento paquete para envï¿½o de seï¿½al primer Byte
+    ECGpack[iECGsample+1]=Make8(ECG_Sample,2);      //Almacenamiento paquete para envï¿½o de seï¿½al segundo Byte
+
+
     iECGsample=iECGsample+2;
-     printf("%d\n\r",ECG_Sample);  //Graficación matlab
+    // printf("%d\n\r",ECG_Sample);  //Graficaciï¿½n matlab
 
 
 
-    //------------------------     Envío de información
+    //------------------------     Envï¿½o de informaciï¿½n
 
-    if(iECGsample>=102)                 //Al completar 100 muestras se envía la información
+    if(iECGsample>=102)                 //Al completar 100 muestras se envï¿½a la informaciï¿½n
     {
         ECGpack[0]=0x4D;                //Primer Byte de paquete es el identificador
         ECGpack[1]=iPack;               //Segundo byte es identificador de paquete.
 
         /* Comentado por chavarin pa debuggeo */
-        for(iECG=0; iECG<102 ; iECG++)  //Envío de los 102 Bytes que conforman el paquete.
-          //putch(ECGpack[iECG]); 
-                       
-        iECGsample=2;                   //Reseteo de índice
+        for(iECG=0; iECG<102 ; iECG++)  //Envï¿½o de los 102 Bytes que conforman el paquete.
+        //  putch(ECGpack[iECG]);
+
+        iECGsample=2;                   //Reseteo de ï¿½ndice
         iPack++;                        //Aumento en contador de paquetes
 
-        if(iPack >= 254)                //Envío de muestras de Temperatura y frecuencía cardiaca al completar 254 envios
+        if(iPack >= 254)                //Envï¿½o de muestras de Temperatura y frecuencï¿½a cardiaca al completar 254 envios
         {
             iPack=0;                    //Reseteo en contador de paqeutes
 //            SendLarPackTFP(GetTemp(),FC_Send,0X3F);   //Comentado por Chavarin
             GetTemp();
-           SendLarPackTFP(TempExt,FC_Send,getPosition());   //Comentado por Chavarin
-           // printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
-            
+           //SendLarPackTFP(TempExt,FC_Send,getPosition());   //Comentado por Chavarin
+            printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
+
         }
-        else if (iPack==127)            //Envío de muestras de Temperatura y frecuencia cardiaca al completar 127 envios
+        else if (iPack==127)            //Envï¿½o de muestras de Temperatura y frecuencia cardiaca al completar 127 envios
         {
 
 //            SendLarPackTFP(GetTemp(),FC_Send,0X3F);   //Comentado por Chavarin
@@ -132,14 +132,14 @@ void ECG(void)
            //SendLarPackTFP(TempExt,FC_Send,getPosition());   //Comentado por Chavarin
            // printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
         }
-        
+
     }
 }
 
 
 unsigned char GetFC(void)
 {
-    //Calculo de la primer derivada de señal ECG
+    //Calculo de la primer derivada de seï¿½al ECG
     unsigned int  HistR[10][10];
     unsigned int FC=0;
     unsigned char FCppm=0;
@@ -162,7 +162,7 @@ unsigned char GetFC(void)
     for(iDer=0;iDer <= NoiseWindowSize;iDer++)
         Der_ECGsignal[iDer]=0;
 
-    //Obtención de Máximo
+    //Obtenciï¿½n de Mï¿½ximo
     for (int i = 0; i < BufferSignalSize; ++i)
     {
         if(Der_ECGsignal[i]>DerMAX)
@@ -170,7 +170,7 @@ unsigned char GetFC(void)
     }
 
     //Threshold
-    ECG_ThresholdMAX=ECG_Threshold*DerMAX;          //Cálculo de umbral para complejo R
+    ECG_ThresholdMAX=ECG_Threshold*DerMAX;          //Cï¿½lculo de umbral para complejo R
 
     for (int i = 0; i <=BufferSignalSize; ++i)
     {
@@ -202,25 +202,22 @@ unsigned char GetFC(void)
                 iNoise=0;
             }
 
-            iNoise++; 
+            iNoise++;
         }
 
 
     }
 
-    //Cálculo de media en intervalos RR
+    //Cï¿½lculo de media en intervalos RR
     for (unsigned char i = 0; i < iRR; ++i)
     {
         RR_Mean=RR_Mean+RR[i];
     }
     RR_Mean=(int)RR_Mean/(iRR);
 
-    //Cálculo de frecuencia cardiaca
+    //Cï¿½lculo de frecuencia cardiaca
     FC=(unsigned int) (ECG_Fs*60)/RR_Mean;
     FCppm= (unsigned char) FC;
 
     return FC;
 }
-
-
-

@@ -5,7 +5,7 @@
 #include <plib/timers.h>
 #include <plib/usart.h>
 #include <plib/adc.h>
-#include "XBeeAT.h"
+#include "XBeeAPI16Bits.h"
 #include "ADC_Config.h"
 #include "ECG.h"
 #include "Utilities.h"
@@ -60,29 +60,29 @@ float GetTemp()
 
     Resistance=Rc*aux/(1-aux);
 
-    
+
     if (Resistance >=1822.8) {
-            // if temperature between 25ºC and 29.9ºC. R(tª)=6638.20457*(0.95768)^t
+            // if temperature between 25ï¿½C and 29.9ï¿½C. R(tï¿½)=6638.20457*(0.95768)^t
             Temperature = (log10( Resistance/6638.20457))*(-1)  / (log10(0.95768) )*(-1);
-            
+
 
     } else {
             if (Resistance >=1477.1){
-                            // if temperature between 30ºC and 34.9ºC. R(tª)=6403.49306*(0.95883)^t
+                            // if temperature between 30ï¿½C and 34.9ï¿½C. R(tï¿½)=6403.49306*(0.95883)^t
                             Temperature= (log10(Resistance/6403.49306))*(-1) / log10(0.95883)*(-1) ;
             } else {
                     if (Resistance >=1204.8){
-                            // if temperature between 35ºC and 39.9ºC. R(tª)=6118.01620*(0.96008)^t
+                            // if temperature between 35ï¿½C and 39.9ï¿½C. R(tï¿½)=6118.01620*(0.96008)^t
                             Temperature= (log10(Resistance/6118.01620))*(-1) / log10(0.96008)*(-1);
                     }
                     else{
                             if (Resistance >=988.1){
-                                    // if temperature between 40ºC and 44.9ºC. R(tª)=5859.06368*(0.96112)^t
+                                    // if temperature between 40ï¿½C and 44.9ï¿½C. R(tï¿½)=5859.06368*(0.96112)^t
                                     Temperature= (log10(Resistance/5859.06368))*(-1)/log10(0.96112)*(-1);
                             }
                             else {
                                     if (Resistance >=811.7){
-                                            // if temperature between 45ºC and 50ºC. R(tª)=5575.94572*(0.96218)^t
+                                            // if temperature between 45ï¿½C and 50ï¿½C. R(tï¿½)=5575.94572*(0.96218)^t
                                             Temperature= (log10(Resistance/5575.94572))*(-1)/log10(0.96218)*(-1);
                                     }
                             }
@@ -90,7 +90,7 @@ float GetTemp()
             }
     }
 
-    //printf("\t%4.2f  \n\n",Temperature); 
+    //printf("\t%4.2f  \n\n",Temperature);
     TempExt=Temperature;
     //return Temperature;
     return 1.0;
@@ -102,6 +102,6 @@ float   GetTempVol(void)
     float Temp;
 
     Temp=((float)GetTempADC()*VolBat)/1024;
-    
+
     return Temp;
 }
