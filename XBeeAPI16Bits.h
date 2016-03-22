@@ -31,6 +31,7 @@ extern unsigned char 	BufferRxUART[127];		//Vector donde es descargada la inform
 
 //Variables para modo API
 extern unsigned char AddressSend[2];
+extern unsigned char AddresMy[2];
 
 
 

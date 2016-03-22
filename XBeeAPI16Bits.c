@@ -13,6 +13,7 @@ unsigned int NoPaqXBAPI=0;
 
 //Enrrutamiento
 unsigned char AddressSend[2];
+unsigned char AddresMy[2];
 
 void UART_XBeeAPI_ISR(void)
 {
