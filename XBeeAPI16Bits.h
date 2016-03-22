@@ -29,13 +29,16 @@ extern unsigned int 	NoPaqXBAPI;
 extern unsigned char 	FlagPaqRx2;
 extern unsigned char 	BufferRxUART[127];		//Vector donde es descargada la informaci�n cruda del puerto serial
 
+//Variables para modo API
+extern unsigned char AddressSend[2];
+
 
 
 int  Make16 (char MSB, char LSB);
 char Make8(int Var, int NoByte);
 void Setup_USART1XBAPI(void);
 void putch(char data);
-
+char ChecksumGen(unsigned char Frame[]);
 
 #ifdef	__cplusplus
 }

@@ -15,7 +15,7 @@ void INTERRUPT_Initialize(void) {
 
     /*Interrupt flags for UART CONTROL*/
     IPR1bits.RC1IP = 1; //Receive Interrupt: High Priority
-    PIE1bits.RC1IE = 0; //Receive Interrupt: Enabled
+    PIE1bits.RC1IE = 1; //Receive Interrupt: Enabled
     PIR1bits.RC1IF = 0; //Reset de EUSART1 Receive Interrupt Flag
 
     /* External Interrupt for FreeFall detection */

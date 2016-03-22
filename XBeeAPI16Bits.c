@@ -4,12 +4,15 @@
 #include <plib/usart.h>
 
 //VARIABLES GLOBALES
+//Manejo de puerto
 unsigned char BufferRxUART[127];
 unsigned char FlagPaqRx2=0;
 unsigned char iRx1XBAPI=0;
 unsigned int PaqXBAPILen=0;
 unsigned int NoPaqXBAPI=0;
 
+//Enrrutamiento
+unsigned char AddressSend[2];
 
 void UART_XBeeAPI_ISR(void)
 {
@@ -41,6 +44,25 @@ void UART_XBeeAPI_ISR(void)
         */
         PIR1bits.RC1IF = 0; // clear rx flag  //Experimental
 
+}
+
+
+char ChecksumGen(unsigned char Frame[])
+{
+    int Checksum=0,IndS=0,Len;
+    unsigned int Sum=0;
+
+    Len=Make16(Frame[1],Frame[2]);
+
+    for(IndS=3;IndS<=Len+2;IndS++) //Checksum comienza despues de longitud y hasta el final.
+    {
+        Sum=Sum+Frame[IndS];
+    }
+
+    Checksum=Sum & 0xFF;
+    Checksum=0xFF-Sum;
+
+    return Checksum;
 }
 
 
