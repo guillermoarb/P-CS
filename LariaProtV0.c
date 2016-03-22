@@ -51,6 +51,9 @@ void TFP_API16Send(float Temp, unsigned char FC, unsigned char Pos)
   char TempINT = (unsigned char)Temp;
   unsigned char TempDEC = (unsigned char) (modf(Temp,&TempAux)*100);
 
+  AddressSend[0]=0xFF;
+  AddressSend[1]=0xAB;
+
 
   BufferTx[0]=0x7E;
   BufferTx[1]=0x00;
