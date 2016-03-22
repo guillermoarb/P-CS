@@ -121,6 +121,11 @@ void SetupClock() //Configuraci�n de reloj.
 
 void SetupPorts()  //Configuraci�n de puertos
 {
+    ANSELCbits.ANSC6=0;
+    ANSELCbits.ANSC7=0;
+    TRISCbits.RC6=0;        //TX es salida
+    TRISCbits.RC7=1;        //RX es entrada
+
     ANSELCbits.ANSC2=0;
     TRISCbits.RC2 = 0;
     PORTCbits.RC2=0;

@@ -1,7 +1,7 @@
 
 
 #include <xc.h>
-//#include "XBeeAPI.h"
+#include "XBeeAPI16Bits.h"
 #include "Utilities.h"
 #include "myI2C.h"
 #include "adxl345.h"
@@ -15,39 +15,41 @@ void INTERRUPT_Initialize(void) {
 
     /*Interrupt flags for UART CONTROL*/
     IPR1bits.RC1IP = 1; //Receive Interrupt: High Priority
-    PIE1bits.RC1IE = 1; //Receive Interrupt: Enabled
-    PIR1bits.RC1IF = 0; //Reset de EUSART2 Receive Interrupt Flag
-    
-    /* External Interrupt for FreeFall detection */    
+    PIE1bits.RC1IE = 0; //Receive Interrupt: Enabled
+    PIR1bits.RC1IF = 0; //Reset de EUSART1 Receive Interrupt Flag
+
+    /* External Interrupt for FreeFall detection */
     INTCONbits.INT0E = 1;       // Enable INT0 interrupt
     INTCON2bits.INTEDG0 = 1;    // Raising edge on INT0
     INTCON2bits.RBPU = 0;       // PORTB Pull-up Enable bit
-    
+
     PEIE = 1;               //Global interrupts
     INTCONbits.GIE = 1;
+    ei();
 }
 
-void interrupt ISR() //Rutinas de interrupción
+void interrupt ISR() //Rutinas de interrupciï¿½n
 {
-    //Timer 0 Interrupción
+    //Timer 0 Interrupciï¿½n
     if (INTCONbits.TMR0IF == 1) {
         TMR0_Glaube_ISR();
     }
 
-    //UART2 Interrupción
-    if (PIR3bits.RC2IF && PIE3bits.RC2IE) //Nombres definidos en XBeeAPI.h
+    //UART2 Interrupciï¿½n
+    //if (PIR1bits.RC1IF && PIE1bits.RC1IE)
+    if (PIR1bits.RC1IF)
     {
-        //UART_XBeeAPI_ISR();
-        PIR3bits.RC2IF = 0;
+        UART_XBeeAPI_ISR();
+        PIR1bits.RC1IF = 0;
     }
 
     if(INTCONbits.INT0IF)
     {
-//        PORTAbits.RA3 = !PORTAbits.RA3;             //Bandera visual de Interrupción RB0
+//        PORTAbits.RA3 = !PORTAbits.RA3;             //Bandera visual de Interrupciï¿½n RB0
 //        SendLarPackTFP(GetTemp(),FC_Send,getPosition(),0xCA);
         SendLarPackTFP(GetTemp(),FC_Send,0xCA);
         readFrom(ADXL345,ADXL345_INT_SOURCE,1);     //Lectura para limpiar registro INT_SOURCE
-        INTCONbits.INT0IF = 0;                      //Clear de flag de interrupción RB0
+        INTCONbits.INT0IF = 0;                      //Clear de flag de interrupciï¿½n RB0
     }
     return;
 }

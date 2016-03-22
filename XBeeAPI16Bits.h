@@ -13,6 +13,24 @@
 extern "C" {
 #endif
 
+//Identificadors recervados  por XBee API
+#define XBAPI_StrDel        0x7E        //Delimitador de inicio en modo API de XBee
+#define XBAPI_Rx64ID        0x80        //Rx API Identifier
+
+//Definici�n de variables
+extern unsigned int 	Length;
+extern unsigned char 	ApiID;
+extern unsigned char 	ApiOp;
+extern unsigned char 	iRx1XBAPI;
+extern unsigned int 	PaqXBAPILen;
+extern unsigned int 	NoPaqXBAPI;
+
+//Variables manejo de puerto serial
+extern unsigned char 	FlagPaqRx2;
+extern unsigned char 	BufferRxUART[127];		//Vector donde es descargada la informaci�n cruda del puerto serial
+
+
+
 int  Make16 (char MSB, char LSB);
 char Make8(int Var, int NoByte);
 void Setup_USART1XBAPI(void);

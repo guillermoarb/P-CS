@@ -3,6 +3,46 @@
 #include <stdio.h>
 #include <plib/usart.h>
 
+//VARIABLES GLOBALES
+unsigned char BufferRxUART[127];
+unsigned char FlagPaqRx2=0;
+unsigned char iRx1XBAPI=0;
+unsigned int PaqXBAPILen=0;
+unsigned int NoPaqXBAPI=0;
+
+
+void UART_XBeeAPI_ISR(void)
+{
+        BufferRxUART[iRx1XBAPI] = Read1USART();
+        printf("Recibido: %d\n",BufferRxUART[0]);
+/*
+        if (iRx1XBAPI == 2) // Se recive suficiente informaci�n para determinar la longitud del paquete
+            if (BufferRxUART[0] == XBAPI_StrDel) //Identificacion de un paquete API XBee
+                PaqXBAPILen = Make16(BufferRxUART[1], BufferRxUART[2]); //Se obtiene la longitud del paquete esperado
+
+        //Terminaci�n por longitud de paquete esperado
+        if (iRx1XBAPI >= PaqXBAPILen + 3) //Si se ha alcanzado el final del paquete esperado
+        {
+            iRx1XBAPI = 0; //Se cierra el paquete
+            NoPaqXBAPI++; //Se aumenta el contador de paquetes recividos
+            FlagPaqRx2 = 1; //Se habilita bandera de nuevo paquete
+
+
+            //PIR3bits.RC2IF = 0;   //Experimental
+
+            //NewPackUART(PaqXBAPILen);  //PaqXBAPILen = Longitud de paquete - Start Delimiter - Length Bytes - Check Sum
+            //FlagBufferRx1Full=0;      //Se deshabilita bandera de buffer Rx lleno
+
+
+            return ;
+        }
+
+        iRx1XBAPI++;
+        */
+        PIR1bits.RC1IF = 0; // clear rx flag  //Experimental
+
+}
+
 
 int Make16 (char MSB, char LSB)
 {
@@ -78,8 +118,6 @@ void Setup_USART1XBAPI(void)
     unsigned char USART1Config=0;
     unsigned int BaudRate=0;
 
-    TRISCbits.RC6=0;        //TX es salida
-    TRISCbits.RC7=1;        //RX es entrada
 
     //Configuraci�n USART
     USART1Config=USART_TX_INT_OFF   //Interrupcion por Ttransmisi�n: Off
@@ -93,7 +131,8 @@ void Setup_USART1XBAPI(void)
     Close1USART();          //Cierra USART2 en caso de estar previamente abierto.
     Open1USART(USART1Config, BaudRate); //Abre USART1
 
-    IPR1bits.RC1IP =1;      //Receive Interrupt: High Priority
-    PIE1bits.RC1IE=1;       //Receive Interrupt: Enabled
-    PIR1bits.RC1IF=0;       //Reset de EUSART2 Receive Interrupt Flag
+    printf("Puerto configurado...\n");
+    //IPR1bits.RC1IP =1;      //Receive Interrupt: High Priority
+    //PIE1bits.RC1IE=1;       //Receive Interrupt: Enabled
+    //PIR1bits.RC1IF=0;       //Reset de EUSART2 Receive Interrupt Flag
 }
