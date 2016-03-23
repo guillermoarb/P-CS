@@ -137,10 +137,17 @@ void ECG_API16Send(unsigned char NoFragmento)
   BufferTx[18]=Make8(NoPacket,2);
   BufferTx[19]=PackECGID;
 
-  for (unsigned char i=0;i<=40;i++)
+  //Para envío de muestras de 16 bits
+  // for (unsigned char i=0;i<=40;i++)
+  // {
+  //   BufferTx[20+(i*2)]   = Make8(ECGsignal[(40*NoFragmento)+i],1);
+  //   BufferTx[20+(i*2)+1] = Make8(ECGsignal[(40*NoFragmento)+i],2);
+  // }
+
+  //Para envíos de muestras de 8 bits
+  for (unsigned char i=0;i<=80;i++)
   {
-    BufferTx[20+(i*2)]   = Make8(ECGsignal[(40*NoFragmento)+i],1);
-    BufferTx[20+(i*2)+1] = Make8(ECGsignal[(40*NoFragmento)+i],2);
+    BufferTx[20+i] = Make8(ECGsignal[(80*NoFragmento)+i],2);
   }
 
   BufferTx[100]=ChecksumGen(BufferTx);
