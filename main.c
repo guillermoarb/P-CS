@@ -162,8 +162,8 @@ void Sekunde(void)  //Rutina de interrupcion para pulso de muestreo
         Seg++;
         MilSeg=0;
     }
-      //conteo para fecuencia de muestreo
-    if(CuartoSeg == 4) // 4 Milisegundos
+        //conteo para fecuencia de muestreo
+    if(CuartoSeg == 4) // 250 Milisegundos
     {
         ECG();  //Cálculo de ECG
         CuartoSeg=0;

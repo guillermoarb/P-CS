@@ -21,6 +21,7 @@ unsigned char FallenFlag=0;
 //Variables protocolo SISO
 unsigned char AddressDestino[2]={0};
 unsigned int NoPacket=0;
+unsigned char BufferTx[100]={0};
 
 void SendLarPackTFP(float Temp, unsigned char FC, unsigned char POS)
 {
@@ -50,7 +51,7 @@ void TFP_API16Send(float Temp, unsigned char FC, unsigned char Pos)
 {
   unsigned char iTFP;
   double TempAux;
-  unsigned char BufferTx[25]={0};
+  //unsigned char BufferTx[25]={0};
 
   char TempINT = (unsigned char)Temp;
   unsigned char TempDEC = (unsigned char) (modf(Temp,&TempAux)*100);
@@ -103,7 +104,7 @@ void TFP_API16Send(float Temp, unsigned char FC, unsigned char Pos)
 
 void ECG_API16Send(void)
 {
-  unsigned char BufferTx[40]={0};
+  //unsigned char BufferTx[100]={0};
 
   AddressSend[0]=0xFF;
   AddressSend[1]=0xAB;
@@ -117,13 +118,13 @@ void ECG_API16Send(void)
   // Llenado de paqeute TFPAPI 16 Bits
   BufferTx[0]=0x7E;
   BufferTx[1]=0x00;
-  BufferTx[2]=0x60;             // LONGITUD !!!!!
+  BufferTx[2]=0x61;             // LONGITUD !!!!!
   BufferTx[3]=0x01;
   BufferTx[4]=0x00;
   BufferTx[5]=AddressSend[0];
   BufferTx[6]=AddressSend[1];
   BufferTx[7]=0x00;
-  BufferTx[8]=DataPackID;
+  BufferTx[8]=DataPackID;           //Comienzo paquete SISO
   BufferTx[9]=NodoMovilID;
   BufferTx[10]=TraspNoASK;
   BufferTx[11]=AddresMy[0];
@@ -136,14 +137,14 @@ void ECG_API16Send(void)
   BufferTx[18]=Make8(NoPacket,2);
   BufferTx[19]=PackECGID;
 
-  for (unsigned char i=0;i<=20;i++)
+  for (unsigned char i=0;i<=80;i++)
   {
     BufferTx[20+i]=i;
   }
 
-  BufferTx[40]=ChecksumGen(BufferTx);
+  BufferTx[100]=ChecksumGen(BufferTx);
 
-  for(unsigned char i=0;i<=40;i++)
+  for(unsigned char i=0;i<=100;i++)
   {
       while(!TXSTA1bits.TRMT);
         Write1USART(BufferTx[i]);

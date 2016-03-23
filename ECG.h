@@ -17,13 +17,13 @@ extern "C" {
     #define SearchWindowSize 40             //Tamaño de la ventana de busqueda
     #define NoiseWindowSize 30              //Tamaño de la ventana de pertubaciones en derivada de ECG
     #define ECG_Threshold 0.7               //Límite para identificación de complejo R en ECG
-    #define BufferSignalSize 1000            //Tamaño de buffer para análisis de muestras
-    #define HistFC_Size 100                 //Tamaño para el buffer de historicos de frecuencia cardiaca
+    #define BufferSignalSize 1000           //Tamaño de buffer para análisis de muestras
+    //#define HistFC_Size 100                 //Tamaño para el buffer de historicos de frecuencia cardiaca
     #define ECGpackSize 80
 
     //Electrocardiograma
     //extern unsigned int  ECGpack[104];
-    extern unsigned char  ECGpack[ECGpackSize];
+    //extern unsigned char  ECGpack[ECGpackSize];
     extern unsigned char  iECGsample;
 
 
@@ -36,13 +36,11 @@ extern "C" {
 
     //Variables para cálculo de Frecuencia cardiaca
     extern unsigned int ECGsignal[BufferSignalSize];
-    extern unsigned char Der_ECGsignal[BufferSignalSize];
+    unsigned char Der_ECGsignal[BufferSignalSize];
     unsigned int iECGsignal;
     unsigned int ECG_ThresholdMAX;
     unsigned char AuxFC;
     extern unsigned char FC_Send;
-
-
 
     int     GetECGADC(void);
     float   GetECG_Volt(void);
