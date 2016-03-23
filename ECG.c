@@ -78,6 +78,9 @@ void ECG(void)
         if(AuxFC!=0)
           FC_Send=AuxFC;
           iECGsignal=0;  // Reinicio de muestreo
+
+          for(unsigned char i=0; i<=25;i++)  //Envío de los 25 fragmentos de la señal
+            ECG_API16Send(i);
     }
     else
     {
@@ -95,7 +98,7 @@ void ECG(void)
     //------------------------     Envío de información
     if(iECGsample>=ECGpackSize)                 //Al completar 80 muestras se envía
     {
-        ECG_API16Send();
+       //    ECG_API16Send();
     }
 }
 

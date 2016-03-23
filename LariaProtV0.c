@@ -102,7 +102,7 @@ void TFP_API16Send(float Temp, unsigned char FC, unsigned char Pos)
 
 }
 
-void ECG_API16Send(void)
+void ECG_API16Send(unsigned char NoFragmento)
 {
   //unsigned char BufferTx[100]={0};
 
@@ -137,9 +137,10 @@ void ECG_API16Send(void)
   BufferTx[18]=Make8(NoPacket,2);
   BufferTx[19]=PackECGID;
 
-  for (unsigned char i=0;i<=80;i++)
+  for (unsigned char i=0;i<=40;i++)
   {
-    BufferTx[20+i]=i;
+    BufferTx[20+(i*2)]   = Make8(ECGsignal[(40*NoFragmento)+i],1);
+    BufferTx[20+(i*2)+1] = Make8(ECGsignal[(40*NoFragmento)+i],2);
   }
 
   BufferTx[100]=ChecksumGen(BufferTx);

@@ -33,7 +33,7 @@ extern unsigned char BufferTx[100];
 
 void SendLarPackTFP(float Temp, unsigned char FC, unsigned char Pos);
 void TFP_API16Send(float Temp, unsigned char FC, unsigned char Pos);
-void ECG_API16Send(void);
+void ECG_API16Send(unsigned char NoFragmento);
 
 
 #ifdef	__cplusplus
