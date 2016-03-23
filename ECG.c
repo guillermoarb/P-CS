@@ -21,7 +21,7 @@
 #define MinMin 1.3
 
 //unsigned int ECGpack[104]={0};
-unsigned char ECGpack[ECGpackSize]={0};
+//unsigned char ECGpack[ECGpackSize]={0};
 unsigned char iECGsample=2;
 unsigned char iPack=0;
 
@@ -78,15 +78,17 @@ void ECG(void)
         if(AuxFC!=0)
           FC_Send=AuxFC;
           iECGsignal=0;  // Reinicio de muestreo
+
+          for(unsigned char i=0; i<=25;i++)  //Envío de los 25 fragmentos de la señal
+            ECG_API16Send(i);
     }
     else
     {
         iECGsignal++;
     }
 
-
-    ECGpack[iECGsample]=Make8(ECG_Sample,1);        //Almacenamiento paquete para envío de se�al primer Byte
-    ECGpack[iECGsample+1]=Make8(ECG_Sample,2);      //Almacenamiento paquete para envío de se�al segundo Byte
+    //ECGpack[iECGsample]=Make8(ECG_Sample,1);        //Almacenamiento paquete para envío de se�al primer Byte
+    //ECGpack[iECGsample+1]=Make8(ECG_Sample,2);      //Almacenamiento paquete para envío de se�al segundo Byte
 
     iECGsample=iECGsample+2;
     // printf("%d\n\r",ECG_Sample);  //Graficación matlab
@@ -96,34 +98,7 @@ void ECG(void)
     //------------------------     Envío de información
     if(iECGsample>=ECGpackSize)                 //Al completar 80 muestras se envía
     {
-      ECG_API16Send(); //Envío de ECG modo API 16
-      /*
-        ECGpack[0]=0x4D;                //Primer Byte de paquete es el identificador
-        ECGpack[1]=iPack;               //Segundo byte es identificador de paquete.
-
-        for(iECG=0; iECG<102 ; iECG++)  //Envío de los 102 Bytes que conforman el paquete.
-        {
-          //putch(ECGpack[iECG]);
-        }
-
-        iECGsample=2;                   //Reseteo de índice
-        iPack++;                        //Aumento en contador de paquetes
-
-        if(iPack >= 254)                //Envío de muestras de Temperatura y frecuenc�a cardiaca al completar 254 envios
-        {
-            iPack=0;                    //Reseteo en contador de paqeutes
-          //  GetTemp();
-           //SendLarPackTFP(TempExt,FC_Send,getPosition());
-            //printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
-
-        }
-        else if (iPack==127)            //Env�o de muestras de Temperatura y frecuencia cardiaca al completar 127 envios
-        {
-          //  GetTemp();
-           //SendLarPackTFP(TempExt,FC_Send,getPosition());
-          //  printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
-        }
-*/
+       //    ECG_API16Send();
     }
 }
 
