@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   ECGv2_0.h
  * Author: GuillermoARB
  *
@@ -19,10 +19,11 @@ extern "C" {
     #define ECG_Threshold 0.7               //Límite para identificación de complejo R en ECG
     #define BufferSignalSize 1000            //Tamaño de buffer para análisis de muestras
     #define HistFC_Size 100                 //Tamaño para el buffer de historicos de frecuencia cardiaca
+    #define ECGpackSize 80
 
     //Electrocardiograma
     //extern unsigned int  ECGpack[104];
-    extern unsigned char  ECGpack[104];
+    extern unsigned char  ECGpack[ECGpackSize];
     extern unsigned char  iECGsample;
 
 
@@ -41,13 +42,13 @@ extern "C" {
     unsigned char AuxFC;
     extern unsigned char FC_Send;
 
-    
+
 
     int     GetECGADC(void);
     float   GetECG_Volt(void);
     void    ECG(void);
     unsigned char GetFC(void);
-    
+
 
 
 #ifdef  __cplusplus

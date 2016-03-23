@@ -21,7 +21,7 @@
 #define MinMin 1.3
 
 //unsigned int ECGpack[104]={0};
-unsigned char ECGpack[104]={0};
+unsigned char ECGpack[ECGpackSize]={0};
 unsigned char iECGsample=2;
 unsigned char iPack=0;
 
@@ -68,7 +68,7 @@ void ECG(void)
 
     //Discretizacion de señal
     ECG_Sample=GetECGADC();                         //Signal samppling
-    ECGsignal[iECGsignal]=ECG_Sample;               //Adquisici�n de se�al
+    ECGsignal[iECGsignal]=ECG_Sample;               //Adquisicion de señal
 
     // Adquisicion de frecuencia cardiaca al tener muestras suficientes
     if(iECGsignal>=BufferSignalSize)
@@ -84,6 +84,7 @@ void ECG(void)
         iECGsignal++;
     }
 
+
     ECGpack[iECGsample]=Make8(ECG_Sample,1);        //Almacenamiento paquete para envío de se�al primer Byte
     ECGpack[iECGsample+1]=Make8(ECG_Sample,2);      //Almacenamiento paquete para envío de se�al segundo Byte
 
@@ -93,8 +94,10 @@ void ECG(void)
 
 
     //------------------------     Envío de información
-    if(iECGsample>=102)                 //Al completar 100 muestras se envía la informaci�n
+    if(iECGsample>=ECGpackSize)                 //Al completar 80 muestras se envía
     {
+      ECG_API16Send(); //Envío de ECG modo API 16
+      /*
         ECGpack[0]=0x4D;                //Primer Byte de paquete es el identificador
         ECGpack[1]=iPack;               //Segundo byte es identificador de paquete.
 
@@ -120,7 +123,7 @@ void ECG(void)
            //SendLarPackTFP(TempExt,FC_Send,getPosition());
           //  printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
         }
-
+*/
     }
 }
 

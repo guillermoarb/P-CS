@@ -13,6 +13,7 @@ extern "C" {
 #endif
 
 #define PackTFPID 0xC7
+#define PackECGID 0x4D
 
 // Identificadores protocolo SISO
 #define DataPackID 0x44
@@ -31,6 +32,7 @@ extern unsigned int NoPacket;
 
 void SendLarPackTFP(float Temp, unsigned char FC, unsigned char Pos);
 void TFP_API16Send(float Temp, unsigned char FC, unsigned char Pos);
+void ECG_API16Send(void);
 
 
 #ifdef	__cplusplus
