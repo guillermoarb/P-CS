@@ -31,7 +31,7 @@ extern unsigned char 	BufferRxUART[127];		//Vector donde es descargada la inform
 
 //Variables para modo API
 extern unsigned char AddressSend[2];
-extern unsigned char AddresMy[2];
+extern unsigned char AddressMy[2];
 
 
 
@@ -40,6 +40,9 @@ char Make8(int Var, int NoByte);
 void Setup_USART1XBAPI(void);
 void putch(char data);
 char ChecksumGen(unsigned char Frame[]);
+void SetAddressSend(unsigned char AddrsMSB, unsigned char AddrsLSB);
+void SetAddressDestino(unsigned char AddrsMSB, unsigned char AddrsLSB);
+void SetAddressMy(unsigned char AddrsMSB, unsigned char AddrsLSB);
 
 #ifdef	__cplusplus
 }

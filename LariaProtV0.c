@@ -56,14 +56,17 @@ void TFP_API16Send(float Temp, unsigned char FC, unsigned char Pos)
   char TempINT = (unsigned char)Temp;
   unsigned char TempDEC = (unsigned char) (modf(Temp,&TempAux)*100);
 
-  AddressSend[0]=0xFF;
-  AddressSend[1]=0xAB;
+  SetAddressSend(0xFF,0xAB);
+  // AddressSend[0]=0xFF;
+  // AddressSend[1]=0xAB;
 
-  AddressDestino[0]=0xCC;
-  AddressDestino[1]=0xCC;
+  SetAddressDestino(0xCC,0xCC);
+  // AddressDestino[0]=0xCC;
+  // AddressDestino[1]=0xCC;
 
-  AddresMy[0]=0xFF;
-  AddresMy[1]=0xCB;
+  SetAddressMy(0xFF,0xCB);
+  // AddressMy[0]=0xFF;
+  // AddressMy[1]=0xCB;
 
   // Llenado de paqeute TFPAPI 16 Bits
   BufferTx[0]=0x7E;
@@ -77,8 +80,8 @@ void TFP_API16Send(float Temp, unsigned char FC, unsigned char Pos)
   BufferTx[8]=DataPackID;
   BufferTx[9]=NodoMovilID;
   BufferTx[10]=TraspNoASK;
-  BufferTx[11]=AddresMy[0];
-  BufferTx[12]=AddresMy[1];
+  BufferTx[11]=AddressMy[0];
+  BufferTx[12]=AddressMy[1];
   BufferTx[13]=AddressDestino[0];
   BufferTx[14]=AddressDestino[1];
   BufferTx[15]=0x00;              //Sin saltos por ser origen
@@ -106,14 +109,17 @@ void ECG_API16Send(unsigned char NoFragmento)
 {
   //unsigned char BufferTx[100]={0};
 
-  AddressSend[0]=0xFF;
-  AddressSend[1]=0xAB;
+  SetAddressSend(0xFF,0xAB);
+  // AddressSend[0]=0xFF;
+  // AddressSend[1]=0xAB;
 
-  AddressDestino[0]=0xCC;
-  AddressDestino[1]=0xCC;
+  SetAddressDestino(0xCC,0xCC);
+  // AddressDestino[0]=0xCC;
+  // AddressDestino[1]=0xCC;
 
-  AddresMy[0]=0xFF;
-  AddresMy[1]=0xCB;
+  SetAddressMy(0xFF,0xCB);
+  // AddressMy[0]=0xFF;
+  // AddressMy[1]=0xCB;
 
   // Llenado de paqeute TFPAPI 16 Bits
   BufferTx[0]=0x7E;
@@ -127,8 +133,8 @@ void ECG_API16Send(unsigned char NoFragmento)
   BufferTx[8]=DataPackID;           //Comienzo paquete SISO
   BufferTx[9]=NodoMovilID;
   BufferTx[10]=TraspNoASK;
-  BufferTx[11]=AddresMy[0];
-  BufferTx[12]=AddresMy[1];
+  BufferTx[11]=AddressMy[0];
+  BufferTx[12]=AddressMy[1];
   BufferTx[13]=AddressDestino[0];
   BufferTx[14]=AddressDestino[1];
   BufferTx[15]=0x00;              //Sin saltos por ser origen
