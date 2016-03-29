@@ -54,16 +54,21 @@ unsigned int MilSegMin=0;
 
 
 
-void main() {
-
-
+void main(void)
+{
     SetupInit();                        //Inicializar sensores y procesos.
-
     printf("Smart Shirt v1.0");
-
-
     while(1)
     {
+      PutByteUART1(BufferRxUART[0]);
+
+      if(FlagPaqRx1==0)
+      {
+        for(unsigned char i=0;i<=8;i++)
+            PutByteUART1(BufferRxUART[i]);
+
+        FlagPaqRx1=0;
+      }
 
 
     }

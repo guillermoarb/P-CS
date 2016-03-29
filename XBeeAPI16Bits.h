@@ -22,12 +22,12 @@ extern unsigned int 	Length;
 extern unsigned char 	ApiID;
 extern unsigned char 	ApiOp;
 extern unsigned char 	iRx1XBAPI;
-extern unsigned int 	PaqXBAPILen;
+extern unsigned char 	PaqXBAPILen;
 extern unsigned int 	NoPaqXBAPI;
 
 //Variables manejo de puerto serial
-extern unsigned char 	FlagPaqRx2;
-extern unsigned char 	BufferRxUART[127];		//Vector donde es descargada la informaci�n cruda del puerto serial
+extern unsigned char 	FlagPaqRx1;
+extern unsigned char 	BufferRxUART[80];		//Vector donde es descargada la informaci�n cruda del puerto serial
 
 //Variables para modo API
 extern unsigned char AddressSend[2];
@@ -44,6 +44,7 @@ void SetAddressSend(unsigned char AddrsMSB, unsigned char AddrsLSB);
 void SetAddressDestino(unsigned char AddrsMSB, unsigned char AddrsLSB);
 void SetAddressMy(unsigned char AddrsMSB, unsigned char AddrsLSB);
 void UART_XBeeAPI_ISR(void);
+void PutByteUART1(unsigned char Byte2Send);
 
 #ifdef	__cplusplus
 }
