@@ -54,17 +54,16 @@ unsigned int MilSegMin=0;
 
 
 
-void main(void)
+main()
 {
     SetupInit();                        //Inicializar sensores y procesos.
     printf("Smart Shirt v1.0");
     while(1)
     {
-      PutByteUART1(BufferRxUART[0]);
 
-      if(FlagPaqRx1==0)
+      if(FlagPaqRx1==1)
       {
-        for(unsigned char i=0;i<=8;i++)
+        for(unsigned char i=0;i<=PaqXBAPILen+3;i++)
             PutByteUART1(BufferRxUART[i]);
 
         FlagPaqRx1=0;
@@ -160,7 +159,7 @@ void Sekunde(void)  //Rutina de interrupcion para pulso de muestreo
     {
         GetTemp();
 
-        printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
+        //printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
         //SendLarPackTFP(TempExt,FC_Send,getPosition());
         //TFP_API16Send(TempExt,FC_Send,getPosition());
 

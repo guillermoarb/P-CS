@@ -13,7 +13,7 @@
 void INTERRUPT_Initialize(void) {
 
     /* Interrup flags for Timer */
-    INTCON2bits.TMR0IP = 0; // 1-> Habilitado 0-> Deshabilitado
+    INTCON2bits.TMR0IP = 1; // 1-> Habilitado 0-> Deshabilitado
 
     /*Interrupt flags for UART CONTROL*/
     IPR1bits.RC1IP = 1; //Receive Interrupt: High Priority

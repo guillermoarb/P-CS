@@ -23,9 +23,10 @@ unsigned char AddressDestino[2]={0};
 unsigned int NoPacket=0;
 unsigned char BufferTx[105]={0};
 
-void TokenSend(unsigned char TknID)
+void TokenSend(unsigned char TknID, unsigned char Address[])
 {
-  SetAddressSend(0xFF,0xAB);
+  //SetAddressSend(0xFF,0xAB);
+  SetAddressSend(Address[0],Address[1]);
 
   BufferTx[0]=0x7E;
   BufferTx[1]=0x00;
