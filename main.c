@@ -155,9 +155,10 @@ void Sekunde(void)  //Rutina de interrupcion para pulso de muestreo
     {
         GetTemp();
 
-        //printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
+        printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
         //SendLarPackTFP(TempExt,FC_Send,getPosition());
-        TFP_API16Send(TempExt,FC_Send,getPosition());
+        //TFP_API16Send(TempExt,FC_Send,getPosition());
+
 
         Seg++;
         MilSeg=0;

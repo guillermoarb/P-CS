@@ -29,11 +29,12 @@ extern unsigned char FallenFlag;
 //Variables protocolo SISO
 extern unsigned char AddressDestino[2];
 extern unsigned int NoPacket;
-extern unsigned char BufferTx[100];
+extern unsigned char BufferTx[105];
 
 void SendLarPackTFP(float Temp, unsigned char FC, unsigned char Pos);
 void TFP_API16Send(float Temp, unsigned char FC, unsigned char Pos);
 void ECG_API16Send(unsigned char NoFragmento);
+void TokenSend(unsigned char TknID);
 
 
 #ifdef	__cplusplus

@@ -21,7 +21,31 @@ unsigned char FallenFlag=0;
 //Variables protocolo SISO
 unsigned char AddressDestino[2]={0};
 unsigned int NoPacket=0;
-unsigned char BufferTx[100]={0};
+unsigned char BufferTx[105]={0};
+
+void TokenSend(unsigned char TknID)
+{
+  SetAddressSend(0xFF,0xAB);
+
+  BufferTx[0]=0x7E;
+  BufferTx[1]=0x00;
+  BufferTx[2]=0x08;
+  BufferTx[3]=0x01;
+  BufferTx[4]=0x00;
+  BufferTx[5]=AddressSend[0];
+  BufferTx[6]=AddressSend[1];
+  BufferTx[7]=0x00;
+  BufferTx[8]=TockenPackID;
+  BufferTx[9]=NodoMovilID;
+  BufferTx[10]=TknID;
+  BufferTx[11]=ChecksumGen(BufferTx);
+
+  for(unsigned char i=0;i<=12;i++)
+  {
+      while(!TXSTA1bits.TRMT);
+        Write1USART(BufferTx[i]);
+  }
+}
 
 void SendLarPackTFP(float Temp, unsigned char FC, unsigned char POS)
 {

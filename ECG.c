@@ -79,8 +79,8 @@ void ECG(void)
           FC_Send=AuxFC;
           iECGsignal=0;  // Reinicio de muestreo
 
-          for(unsigned char i=0; i<=12;i++)  //Envío de los 25 para 10 bits fragmentos de la señal o 12 para 8 bits.
-            ECG_API16Send(i);
+          //for(unsigned char i=0; i<=12;i++)  //Envío de los 25 para 10 bits fragmentos de la señal o 12 para 8 bits.
+            //ECG_API16Send(i);
     }
     else
     {

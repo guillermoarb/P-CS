@@ -14,7 +14,7 @@ void TMR0_Glaube_ISR()
 
         Sekunde();
         WriteTimer0(Load);    //0.001 Seg. FOSC 32 MHz
-        INTCONbits.TMR0IF = 0;
+        INTCONbits.TMR0IF = 0; //regresar a cero
 
 
 }

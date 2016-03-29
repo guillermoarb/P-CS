@@ -19,7 +19,8 @@ unsigned char AddressMy[2];
 void UART_XBeeAPI_ISR(void)
 {
         BufferRxUART[iRx1XBAPI] = Read1USART();
-        printf("Recibido: %d\n",BufferRxUART[0]);
+      //  printf("Recibido: %d\n",BufferRxUART[0]);
+        TokenSend(BufferRxUART[0]);
 /*
         if (iRx1XBAPI == 2) // Se recive suficiente informaci�n para determinar la longitud del paquete
             if (BufferRxUART[0] == XBAPI_StrDel) //Identificacion de un paquete API XBee
@@ -44,7 +45,7 @@ void UART_XBeeAPI_ISR(void)
 
         iRx1XBAPI++;
         */
-        PIR1bits.RC1IF = 0; // clear rx flag  //Experimental
+      //  PIR1bits.RC1IF = 0; // clear rx flag  //Experimental
 
 }
 
@@ -133,7 +134,7 @@ void Setup_USART1XBAPI(void)
 
     //Configuraci�n USART
     USART1Config=USART_TX_INT_OFF   //Interrupcion por Ttransmisi�n: Off
-            &USART_RX_INT_OFF       //Interrupcion por Recepci�n: Off
+            &USART_RX_INT_ON       //Interrupcion por Recepci�n: Off
             &USART_ASYNCH_MODE      //Modo As�ncrono
             &USART_EIGHT_BIT        //Transmision de 8bits
             &USART_CONT_RX          //Recepci�n Continua
@@ -143,7 +144,7 @@ void Setup_USART1XBAPI(void)
     Close1USART();          //Cierra USART2 en caso de estar previamente abierto.
     Open1USART(USART1Config, BaudRate); //Abre USART1
 
-    printf("Puerto configurado...\n");
+    //printf("Puerto configurado...\n");
     //IPR1bits.RC1IP =1;      //Receive Interrupt: High Priority
     //PIE1bits.RC1IE=1;       //Receive Interrupt: Enabled
     //PIR1bits.RC1IF=0;       //Reset de EUSART2 Receive Interrupt Flag

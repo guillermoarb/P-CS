@@ -43,6 +43,7 @@ char ChecksumGen(unsigned char Frame[]);
 void SetAddressSend(unsigned char AddrsMSB, unsigned char AddrsLSB);
 void SetAddressDestino(unsigned char AddrsMSB, unsigned char AddrsLSB);
 void SetAddressMy(unsigned char AddrsMSB, unsigned char AddrsLSB);
+void UART_XBeeAPI_ISR(void);
 
 #ifdef	__cplusplus
 }
