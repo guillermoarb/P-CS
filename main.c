@@ -54,12 +54,17 @@ unsigned int MilSegMin=0;
 
 
 
+
 main()
 {
-    SetupInit();                        //Inicializar sensores y procesos.
+    SetupInit();            //Inicializar sensores y procesos.
+    SISOProtInit();         // Inicio protocolo SISO
+
+
     printf("Smart Shirt v1.0");
     while(1)
     {
+      StsChng();  //Cambio de estado en protocolo
 
       if(FlagPaqRx1==1)
       {
@@ -162,10 +167,13 @@ void Sekunde(void)  //Rutina de interrupcion para pulso de muestreo
         //printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
         //SendLarPackTFP(TempExt,FC_Send,getPosition());
         //TFP_API16Send(TempExt,FC_Send,getPosition());
-
+        printf("Seg: %d",Seg);
 
         Seg++;
         MilSeg=0;
+
+        SegCntr1++;                         //Contador Auxiliar de SISO
+        if(SegCntr1>=255){SegCntr1=0;}
     }
         //conteo para fecuencia de muestreo
     if(CuartoSeg == 4) // 250 Milisegundos

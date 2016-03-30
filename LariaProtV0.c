@@ -22,6 +22,71 @@ unsigned char FallenFlag=0;
 unsigned char AddressDestino[2]={0};
 unsigned int NoPacket=0;
 unsigned char BufferTx[105]={0};
+unsigned char TknCnt=0;
+
+//Tiempo
+unsigned char SegCntr1=0;
+unsigned char SegCntr2=0;
+
+//Estados SISO banderas
+unsigned char FlagSts= 0; //Bandera de estado del protocolo
+unsigned char StsVrgn=0;  //Validación de entrada a estado virgen
+unsigned char FlagAdrsACK=0;  //Bancera de nueva dirección recibida
+
+void StsChng(void)   //Cambiador de estatus
+{
+  switch(FlagSts)
+  {
+    case 0:
+
+      if (StsVrgn == 0)
+      {
+        SegCntr1=0;
+        StsVrgn=1;
+      }
+
+      if(SegCntr1 >= Wait4AdrsReq) //Si se alcanza el tiempo límite se cambia a estado 1
+      {
+        FlagSts=1;
+        StsVrgn=0;
+      }
+
+    break;
+
+    case 1:
+      if(StsVrgn == 0)
+      {
+        AdrsReq();
+      }
+
+      if(FlagAdrsACK==1)
+      {
+        FlagSts=3; //Cambio de estado a prueba de dirección recibida
+        FlagAdrsACK=0; //Limpieza de bandera de nueva dirección recibida
+      }
+
+    break;
+
+    default:
+
+    break;
+  }
+}
+
+void SISOProtInit(void)
+{
+  FlagSts=0; //Estatus de inicio sin dirección.
+  SetAddressSend(0x00,0x00);
+  SetAddressDestino(0x00,0x00);
+  SetAddressMy(0xFF,0xCB);
+}
+
+void AdrsReq(void)
+{
+  SetAddressSend(0xFF,0xFF);
+  TokenSend(TknCnt,AddressSend);
+  TknCnt++;
+}
 
 void TokenSend(unsigned char TknID, unsigned char Address[])
 {
@@ -35,7 +100,10 @@ void TokenSend(unsigned char TknID, unsigned char Address[])
   BufferTx[4]=0x00;
   BufferTx[5]=AddressSend[0];
   BufferTx[6]=AddressSend[1];
-  BufferTx[7]=0x00;
+
+  if(Address[0]==0xFF && Address[1]==0xFF) {BufferTx[7]=0x04; }
+  else {BufferTx[7]=0x00;  }           //Fin de trama API
+
   BufferTx[8]=TockenPackID;
   BufferTx[9]=NodoMovilID;
   BufferTx[10]=TknID;
