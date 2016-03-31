@@ -18,9 +18,9 @@ extern "C" {
 #define XBAPI_Rx64ID        0x80        //Rx API Identifier
 
 //Definici�n de variables
-extern unsigned int 	Length;
-extern unsigned char 	ApiID;
-extern unsigned char 	ApiOp;
+//extern unsigned int 	Length;
+//extern unsigned char 	ApiID;
+//extern unsigned char 	ApiOp;
 extern unsigned char 	iRx1XBAPI;
 extern unsigned char 	PaqXBAPILen;
 extern unsigned int 	NoPaqXBAPI;

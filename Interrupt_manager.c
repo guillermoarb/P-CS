@@ -41,7 +41,13 @@ void interrupt ISR() //Rutinas de interrupci�n
     //if (PIR1bits.RC1IF && PIE1bits.RC1IE)
     if (PIR1bits.RC1IF && PIE1bits.RC1IE)
     {
-        //printf("Recibido INT\n");
+        if(RC1STAbits.OERR == 1)
+        {
+          RC1STAbits.CREN =0;
+          RC1STAbits.CREN = 1;
+          //Reset();
+        }
+
         UART_XBeeAPI_ISR();
         PIR1bits.RC1IF = 0;
     }

@@ -19,33 +19,21 @@ unsigned char AddressMy[2];
 void UART_XBeeAPI_ISR(void)
 {
         BufferRxUART[iRx1XBAPI] = Read1USART();
-        PutByteUART1(iRx1XBAPI);
 
         if (iRx1XBAPI == 2) // Se recive suficiente informacion para determinar la longitud del paquete
         {
+          PutByteUART1(BufferRxUART[2]);
           PaqXBAPILen = BufferRxUART[2]; //Se obtiene la longitud del paquete esperado
-          PutByteUART1(PaqXBAPILen);
-
         }
         //Terminacion por longitud de paquete esperado
         if (iRx1XBAPI >= PaqXBAPILen + 3) //Si se ha alcanzado el final del paquete esperado
         {
-            PutByteUART1(0xFB);
             iRx1XBAPI=0; //Se cierra el paquete
             NoPaqXBAPI++; //Se aumenta el contador de paquetes recividos
             FlagPaqRx1=1; //Se habilita bandera de nuevo paquete
-
-            //NewPackUART(PaqXBAPILen);  //PaqXBAPILen = Longitud de paquete - Start Delimiter - Length Bytes - Check Sum
-            //FlagBufferRx1Full=0;      //Se deshabilita bandera de buffer Rx lleno
-
-
             return ;
         }
-
         iRx1XBAPI++;
-
-      //  PIR1bits.RC1IF = 0; // clear rx flag  //Experimental
-
 }
 
 void SetAddressSend(unsigned char AddrsMSB, unsigned char AddrsLSB)

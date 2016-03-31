@@ -27,42 +27,120 @@ unsigned char TknCnt=0;
 //Tiempo
 unsigned char SegCntr1=0;
 unsigned char SegCntr2=0;
+unsigned char SegCntr3=0;
+unsigned char SegCntr4=0;
 
 //Estados SISO banderas
 unsigned char FlagSts= 0; //Bandera de estado del protocolo
 unsigned char StsVrgn=0;  //Validación de entrada a estado virgen
 unsigned char FlagAdrsACK=0;  //Bancera de nueva dirección recibida
+unsigned char FlagMonitor=0;   //Bandera para análisis de link
+
+void SISOMelken(void)
+{
+  if (RxPackType == TockenACKID)
+  {
+    if(RxPackTockenCnt==TknCnt-1)
+    {
+      SetAddressSend(RxPackAdrsRemMSB,RxPackAdrsRemLSB);
+      FlagAdrsACK=1;
+    }
+  }
+}
 
 void StsChng(void)   //Cambiador de estatus
 {
   switch(FlagSts)
   {
-    case 0:
+    case 0: //NO ADDRESS
 
       if (StsVrgn == 0)
       {
+        //asm("reset");
+        printf("\t\nEstado:0\tMonitor OFF\n");
         SegCntr1=0;
         StsVrgn=1;
+        FlagMonitor=0;
       }
 
       if(SegCntr1 >= Wait4AdrsReq) //Si se alcanza el tiempo límite se cambia a estado 1
       {
+        printf("\t\nCambio estado: 0->1 >> Address REQ");
         FlagSts=1;
         StsVrgn=0;
       }
 
     break;
 
-    case 1:
+    case 1:  //Address REQUEST
       if(StsVrgn == 0)
       {
+        printf("\t\nEstado:1\tMonitor OFF\tTocken:%d\n",TknCnt);
         AdrsReq();
+        StsVrgn = 1;
+        FlagMonitor=0;
+        SegCntr4=0;
       }
 
       if(FlagAdrsACK==1)
       {
-        FlagSts=3; //Cambio de estado a prueba de dirección recibida
+        printf("\t\nCambio estado: 1->2 >> Address received by BROADCAST");
+        FlagSts=2; //Cambio de estado a prueba de dirección recibida
         FlagAdrsACK=0; //Limpieza de bandera de nueva dirección recibida
+        StsVrgn=0;
+      }
+
+      if(SegCntr4>=Wait4TckACKBroadcast)
+      {
+        printf("\t\nCambio estado: 1->0 >> Timeout Adrs from BROADCAST NOT RECEIVED");
+        FlagSts=0;
+        StsVrgn=0;
+      }
+
+
+    break;
+
+    case 2:  //Link Alive
+      if(StsVrgn==0)
+      {
+        printf("\t\nEstado:2\tMonitor ON\tTocken:%d\n",TknCnt);
+        SegCntr2=0;
+        StsVrgn=1;
+        TokenSend(TknCnt,AddressSend);
+        //FlagMonitor=0;
+      }
+
+      if(FlagAdrsACK==1)
+      {
+        printf("\t\nCambio estado: 2->3 >> Address received by UNICAST");
+        FlagAdrsACK=0;
+        FlagSts=3;
+        StsVrgn=0;
+      }
+
+      if(SegCntr2>=Wait4TknAck)
+      {
+        printf("\t\nCambio estado: 2->0 >> Timeout No Address Received");
+        FlagSts=0;
+        StsVrgn=0;
+      }
+
+
+    break;
+
+    case 3: //OK - Estado
+      if(StsVrgn==0)
+      {
+        printf("\t\nEstado:3\tMonitor ON\n");
+        FlagMonitor=1;
+        SegCntr3=0;
+        StsVrgn=1;
+      }
+      if(SegCntr3>=Wait4LinkTest)
+      {
+        printf("\t\nCambio estado: 3->2 >> Timeout Link test");
+        FlagSts=2;
+        StsVrgn=0;
       }
 
     break;
@@ -75,7 +153,11 @@ void StsChng(void)   //Cambiador de estatus
 
 void SISOProtInit(void)
 {
+  printf("\tSISO Init...\n");
   FlagSts=0; //Estatus de inicio sin dirección.
+  StsVrgn=0;
+  TknCnt=0;
+  FlagMonitor=0;
   SetAddressSend(0x00,0x00);
   SetAddressDestino(0x00,0x00);
   SetAddressMy(0xFF,0xCB);
@@ -85,12 +167,10 @@ void AdrsReq(void)
 {
   SetAddressSend(0xFF,0xFF);
   TokenSend(TknCnt,AddressSend);
-  TknCnt++;
 }
 
 void TokenSend(unsigned char TknID, unsigned char Address[])
 {
-  //SetAddressSend(0xFF,0xAB);
   SetAddressSend(Address[0],Address[1]);
 
   BufferTx[0]=0x7E;
@@ -114,6 +194,7 @@ void TokenSend(unsigned char TknID, unsigned char Address[])
       while(!TXSTA1bits.TRMT);
         Write1USART(BufferTx[i]);
   }
+  TknCnt++;
 }
 
 void SendLarPackTFP(float Temp, unsigned char FC, unsigned char POS)

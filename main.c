@@ -59,8 +59,6 @@ main()
 {
     SetupInit();            //Inicializar sensores y procesos.
     SISOProtInit();         // Inicio protocolo SISO
-
-
     printf("Smart Shirt v1.0");
     while(1)
     {
@@ -68,9 +66,10 @@ main()
 
       if(FlagPaqRx1==1)
       {
-        for(unsigned char i=0;i<=PaqXBAPILen+3;i++)
-            PutByteUART1(BufferRxUART[i]);
-
+        SISOMelken();
+        //for(unsigned char i=0;i<=PaqXBAPILen+3;i++)
+          //   PutByteUART1(BufferRxUART[i]);
+        printf("Rx Pack. \tPack #%d\tLenght:%d\tiRx:%d\n",NoPaqXBAPI,PaqXBAPILen,iRx1XBAPI);
         FlagPaqRx1=0;
       }
 
@@ -167,13 +166,20 @@ void Sekunde(void)  //Rutina de interrupcion para pulso de muestreo
         //printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
         //SendLarPackTFP(TempExt,FC_Send,getPosition());
         //TFP_API16Send(TempExt,FC_Send,getPosition());
-        printf("Seg: %d",Seg);
-
+        //printf("\t\tSegCtr1:%d\n",SegCntr1);
+        //printf("\tEstado;%d\n", FlagSts);
         Seg++;
         MilSeg=0;
 
-        SegCntr1++;                         //Contador Auxiliar de SISO
+        SegCntr1++;                         //Contador Auxiliar 1 de SISO
         if(SegCntr1>=255){SegCntr1=0;}
+        SegCntr2++;                         //Contador Auxiliar 2 de SISO
+        if(SegCntr2>=255){SegCntr2=0;}
+        SegCntr3++;                         //Contador Auxiliar 3 de SISO
+        if(SegCntr3>=255){SegCntr3=0;}
+        SegCntr4++;                         //Contador Auxiliar 4 de SISO
+        if(SegCntr4>=255){SegCntr4=0;}
+
     }
         //conteo para fecuencia de muestreo
     if(CuartoSeg == 4) // 250 Milisegundos
