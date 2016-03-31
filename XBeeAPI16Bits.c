@@ -22,7 +22,7 @@ void UART_XBeeAPI_ISR(void)
 
         if (iRx1XBAPI == 2) // Se recive suficiente informacion para determinar la longitud del paquete
         {
-          PutByteUART1(BufferRxUART[2]);
+          //PutByteUART1(BufferRxUART[2]);
           PaqXBAPILen = BufferRxUART[2]; //Se obtiene la longitud del paquete esperado
         }
         //Terminacion por longitud de paquete esperado

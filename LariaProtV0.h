@@ -29,10 +29,10 @@ extern "C" {
 #define TraspASK 0x01
 
 //Tiempo SISO
-#define Wait4TknAck 10 //Espera por respuesta en el estado 2
+#define Wait4TknAck 20 //Espera por respuesta en el estado 2
 #define Wait4AdrsReq 5        //Espera por solicitud BRADCAST de dirección
-#define Wait4LinkTest 10  //Espera para revisar la vida del enlace
-#define Wait4TckACKBroadcast 10 //Espera por respuesta en estado 1
+#define Wait4LinkTest 20  //Espera para revisar la vida del enlace
+#define Wait4TckACKBroadcast 20 //Espera por respuesta en estado 1
 //Variables protocolo Laria
 extern unsigned char FallenFlag;
 

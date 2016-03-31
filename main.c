@@ -59,7 +59,7 @@ main()
 {
     SetupInit();            //Inicializar sensores y procesos.
     SISOProtInit();         // Inicio protocolo SISO
-    printf("Smart Shirt v1.0");
+    //printf("Smart Shirt v1.0");
     while(1)
     {
       StsChng();  //Cambio de estado en protocolo
@@ -69,7 +69,7 @@ main()
         SISOMelken();
         //for(unsigned char i=0;i<=PaqXBAPILen+3;i++)
           //   PutByteUART1(BufferRxUART[i]);
-        printf("Rx Pack. \tPack #%d\tLenght:%d\tiRx:%d\n",NoPaqXBAPI,PaqXBAPILen,iRx1XBAPI);
+        //printf("Rx Pack. \tPack #%d\tLenght:%d\tiRx:%d\n",NoPaqXBAPI,PaqXBAPILen,iRx1XBAPI);
         FlagPaqRx1=0;
       }
 
@@ -163,11 +163,13 @@ void Sekunde(void)  //Rutina de interrupcion para pulso de muestreo
     {
         GetTemp();
 
-        //printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
+        ////printf("\n\t Temp: %f\tFC:%d\t Pos: %d ",TempExt,FC_Send,getPosition());
         //SendLarPackTFP(TempExt,FC_Send,getPosition());
-        //TFP_API16Send(TempExt,FC_Send,getPosition());
-        //printf("\t\tSegCtr1:%d\n",SegCntr1);
-        //printf("\tEstado;%d\n", FlagSts);
+        if(FlagMonitor==1)
+        {
+          TFP_API16Send(TempExt,FC_Send,getPosition());
+        }
+
         Seg++;
         MilSeg=0;
 

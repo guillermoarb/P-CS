@@ -57,7 +57,7 @@ void StsChng(void)   //Cambiador de estatus
       if (StsVrgn == 0)
       {
         //asm("reset");
-        printf("\t\nEstado:0\tMonitor OFF\n");
+        //printf("\t\nEstado:0\tMonitor OFF\n");
         SegCntr1=0;
         StsVrgn=1;
         FlagMonitor=0;
@@ -65,7 +65,7 @@ void StsChng(void)   //Cambiador de estatus
 
       if(SegCntr1 >= Wait4AdrsReq) //Si se alcanza el tiempo límite se cambia a estado 1
       {
-        printf("\t\nCambio estado: 0->1 >> Address REQ");
+        //printf("\t\nCambio estado: 0->1 >> Address REQ");
         FlagSts=1;
         StsVrgn=0;
       }
@@ -75,7 +75,7 @@ void StsChng(void)   //Cambiador de estatus
     case 1:  //Address REQUEST
       if(StsVrgn == 0)
       {
-        printf("\t\nEstado:1\tMonitor OFF\tTocken:%d\n",TknCnt);
+        //printf("\t\nEstado:1\tMonitor OFF\tTocken:%d\n",TknCnt);
         AdrsReq();
         StsVrgn = 1;
         FlagMonitor=0;
@@ -84,7 +84,7 @@ void StsChng(void)   //Cambiador de estatus
 
       if(FlagAdrsACK==1)
       {
-        printf("\t\nCambio estado: 1->2 >> Address received by BROADCAST");
+        //printf("\t\nCambio estado: 1->2 >> Address received by BROADCAST");
         FlagSts=2; //Cambio de estado a prueba de dirección recibida
         FlagAdrsACK=0; //Limpieza de bandera de nueva dirección recibida
         StsVrgn=0;
@@ -92,7 +92,7 @@ void StsChng(void)   //Cambiador de estatus
 
       if(SegCntr4>=Wait4TckACKBroadcast)
       {
-        printf("\t\nCambio estado: 1->0 >> Timeout Adrs from BROADCAST NOT RECEIVED");
+        //printf("\t\nCambio estado: 1->0 >> Timeout Adrs from BROADCAST NOT RECEIVED");
         FlagSts=0;
         StsVrgn=0;
       }
@@ -103,7 +103,7 @@ void StsChng(void)   //Cambiador de estatus
     case 2:  //Link Alive
       if(StsVrgn==0)
       {
-        printf("\t\nEstado:2\tMonitor ON\tTocken:%d\n",TknCnt);
+        //printf("\t\nEstado:2\tMonitor ON\tTocken:%d\n",TknCnt);
         SegCntr2=0;
         StsVrgn=1;
         TokenSend(TknCnt,AddressSend);
@@ -112,7 +112,7 @@ void StsChng(void)   //Cambiador de estatus
 
       if(FlagAdrsACK==1)
       {
-        printf("\t\nCambio estado: 2->3 >> Address received by UNICAST");
+        //printf("\t\nCambio estado: 2->3 >> Address received by UNICAST");
         FlagAdrsACK=0;
         FlagSts=3;
         StsVrgn=0;
@@ -120,7 +120,7 @@ void StsChng(void)   //Cambiador de estatus
 
       if(SegCntr2>=Wait4TknAck)
       {
-        printf("\t\nCambio estado: 2->0 >> Timeout No Address Received");
+        //printf("\t\nCambio estado: 2->0 >> Timeout No Address Received");
         FlagSts=0;
         StsVrgn=0;
       }
@@ -131,14 +131,14 @@ void StsChng(void)   //Cambiador de estatus
     case 3: //OK - Estado
       if(StsVrgn==0)
       {
-        printf("\t\nEstado:3\tMonitor ON\n");
+        //printf("\t\nEstado:3\tMonitor ON\n");
         FlagMonitor=1;
         SegCntr3=0;
         StsVrgn=1;
       }
       if(SegCntr3>=Wait4LinkTest)
       {
-        printf("\t\nCambio estado: 3->2 >> Timeout Link test");
+        //printf("\t\nCambio estado: 3->2 >> Timeout Link test");
         FlagSts=2;
         StsVrgn=0;
       }
@@ -153,7 +153,7 @@ void StsChng(void)   //Cambiador de estatus
 
 void SISOProtInit(void)
 {
-  printf("\tSISO Init...\n");
+  //printf("\tSISO Init...\n");
   FlagSts=0; //Estatus de inicio sin dirección.
   StsVrgn=0;
   TknCnt=0;
@@ -189,7 +189,7 @@ void TokenSend(unsigned char TknID, unsigned char Address[])
   BufferTx[10]=TknID;
   BufferTx[11]=ChecksumGen(BufferTx);
 
-  for(unsigned char i=0;i<=12;i++)
+  for(unsigned char i=0;i<=11;i++)
   {
       while(!TXSTA1bits.TRMT);
         Write1USART(BufferTx[i]);
@@ -199,7 +199,7 @@ void TokenSend(unsigned char TknID, unsigned char Address[])
 
 void SendLarPackTFP(float Temp, unsigned char FC, unsigned char POS)
 {
-    //printf("\t \nTemp C = %1.2f ", GetTemp());
+    ////printf("\t \nTemp C = %1.2f ", GetTemp());
 
     unsigned char PackTFP[5]={0};
     unsigned char iTFP;
@@ -230,7 +230,7 @@ void TFP_API16Send(float Temp, unsigned char FC, unsigned char Pos)
   char TempINT = (unsigned char)Temp;
   unsigned char TempDEC = (unsigned char) (modf(Temp,&TempAux)*100);
 
-  SetAddressSend(0xFF,0xAB);
+  //SetAddressSend(0xFF,0xAB);
   // AddressSend[0]=0xFF;
   // AddressSend[1]=0xAB;
 
@@ -283,7 +283,7 @@ void ECG_API16Send(unsigned char NoFragmento)
 {
   //unsigned char BufferTx[100]={0};
 
-  SetAddressSend(0xFF,0xAB);
+  //SetAddressSend(0xFF,0xAB);
   // AddressSend[0]=0xFF;
   // AddressSend[1]=0xAB;
 
