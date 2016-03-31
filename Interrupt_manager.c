@@ -16,6 +16,7 @@ void INTERRUPT_Initialize(void) {
     INTCON2bits.TMR0IP = 1; // 1-> Habilitado 0-> Deshabilitado
 
     /*Interrupt flags for UART CONTROL*/
+    RCONbits.IPEN = 1;  //Habilitación de vector de prioridad
     IPR1bits.RC1IP = 1; //Receive Interrupt: High Priority
     PIE1bits.RC1IE = 1; //Receive Interrupt: Enabled
     PIR1bits.RC1IF = 0; //Reset de EUSART1 Receive Interrupt Flag
