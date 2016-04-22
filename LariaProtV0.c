@@ -159,8 +159,8 @@ void SISOProtInit(void)
   TknCnt=0;
   FlagMonitor=0;
   SetAddressSend(0x00,0x00);
-  SetAddressDestino(0x00,0x00);
-  SetAddressMy(0xFF,0xCB);
+  SetAddressDestino(0x00,0x03);
+  SetAddressMy(0x00,0xCB);
 }
 
 void AdrsReq(void)
@@ -234,7 +234,7 @@ void TFP_API16Send(float Temp, unsigned char FC, unsigned char Pos)
   // AddressSend[0]=0xFF;
   // AddressSend[1]=0xAB;
 
-  SetAddressDestino(0xCC,0xCC);
+  SetAddressDestino(0x00,0x03);
   // AddressDestino[0]=0xCC;
   // AddressDestino[1]=0xCC;
 
@@ -287,7 +287,7 @@ void ECG_API16Send(unsigned char NoFragmento)
   // AddressSend[0]=0xFF;
   // AddressSend[1]=0xAB;
 
-  SetAddressDestino(0xCC,0xCC);
+  SetAddressDestino(0x00,0x03);
   // AddressDestino[0]=0xCC;
   // AddressDestino[1]=0xCC;
 
