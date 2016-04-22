@@ -238,7 +238,7 @@ void TFP_API16Send(float Temp, unsigned char FC, unsigned char Pos)
   // AddressDestino[0]=0xCC;
   // AddressDestino[1]=0xCC;
 
-  SetAddressMy(0xFF,0xCB);
+  //SetAddressMy(0xFF,0xCB);
   // AddressMy[0]=0xFF;
   // AddressMy[1]=0xCB;
 
@@ -291,7 +291,7 @@ void ECG_API16Send(unsigned char NoFragmento)
   // AddressDestino[0]=0xCC;
   // AddressDestino[1]=0xCC;
 
-  SetAddressMy(0xFF,0xCB);
+  //SetAddressMy(0xFF,0xCB);
   // AddressMy[0]=0xFF;
   // AddressMy[1]=0xCB;
 
