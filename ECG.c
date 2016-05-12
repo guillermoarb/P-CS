@@ -1,3 +1,6 @@
+#define _XTAL_FREQ 32000000
+
+
 #include <xc.h>
 #include "config.h"
 #include <stdio.h>
@@ -14,7 +17,8 @@
 #include "LariaProtV0.h"
 #include "Temp_RTD.h"
 
-#define _XTAL_FREQ 32000000
+
+
 #define PorcUmbral 0.80
 #define UmbralR 1.4
 #define MaxMax 1.7
@@ -82,7 +86,10 @@ void ECG(void)
           if(FlagMonitor==1)
           {
             for(unsigned char i=0; i<=12;i++)  //Envío de los 25 para 10 bits fragmentos de la señal o 12 para 8 bits.
-              ECG_API16Send(i);
+              {
+                Delay_10ms(10);
+                ECG_API16Send(i);
+              }
           }
     }
     else
@@ -95,7 +102,6 @@ void ECG(void)
 
     iECGsample=iECGsample+2;
     // printf("%d\n\r",ECG_Sample);  //Graficación matlab
-
 
 
     //------------------------     Envío de información

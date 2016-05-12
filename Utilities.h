@@ -16,6 +16,7 @@ extern unsigned char Timer0Flag;
 extern unsigned int Load;
 
 void TMR0_Glaube_ISR(void);
+void Delay_10ms(unsigned char);
 
 
 #ifdef	__cplusplus
@@ -23,4 +24,3 @@ void TMR0_Glaube_ISR(void);
 #endif
 
 #endif	/* UTILITIES_H */
-

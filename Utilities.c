@@ -3,6 +3,8 @@
 #include "Utilities.h"
 #include <xc.h>
 
+#define _XTAL_FREQ 32000000
+
 unsigned char Timer0Flag=0;
 unsigned int Load=0;
 
@@ -17,4 +19,10 @@ void TMR0_Glaube_ISR()
         INTCONbits.TMR0IF = 0; //regresar a cero
 
 
+}
+
+void Delay_10ms(unsigned char NumDelays)
+{
+  for(unsigned char i=0; i<=NumDelays; i++)
+    __delay_ms(10);
 }

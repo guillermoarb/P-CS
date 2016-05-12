@@ -57,6 +57,7 @@ unsigned int MilSegMin=0;
 
 main()
 {
+    __delay_ms(1);
     SetupInit();            //Inicializar sensores y procesos.
     SISOProtInit();         // Inicio protocolo SISO
     //printf("Smart Shirt v1.0");
